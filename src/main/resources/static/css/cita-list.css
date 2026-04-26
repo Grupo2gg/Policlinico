@@ -1,0 +1,51 @@
+:root {
+    --azul:    #1a3c5e;
+    --teal:    #0d7c6e;
+    --blanco:  #ffffff;
+    --gris:    #f5f5f5;
+    --borde:   #ddd;
+    --texto:   #333;
+    --rojo:    #c0392b;
+    --verde:   #1e8449;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; font-size: 15px; background: var(--gris); color: var(--texto); }
+
+.navbar { background: var(--azul); padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; }
+.navbar .logo { color: white; font-size: 17px; font-weight: bold; }
+.navbar a { color: #ccc; text-decoration: none; margin-left: 14px; font-size: 14px; }
+.navbar a:hover { color: white; }
+
+.footer { background: var(--azul); color: #aaa; text-align: center; padding: 14px; font-size: 13px; margin-top: 40px; }
+
+.container { max-width: 950px; margin: 30px auto; padding: 0 20px; }
+
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.page-header h2 { color: var(--azul); font-size: 22px; }
+
+.btn { padding: 8px 18px; border: none; border-radius: 4px; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn-primary  { background: var(--azul); color: white; }
+.btn-danger   { background: var(--rojo); color: white; }
+.btn-secondary{ background: #888; color: white; }
+.btn:hover { opacity: 0.88; }
+
+.filtro { background: white; border: 1px solid var(--borde); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; display: flex; gap: 12px; align-items: center; }
+.filtro label { font-size: 13px; font-weight: bold; color: #555; }
+.filtro select { padding: 7px 10px; border: 1px solid var(--borde); border-radius: 4px; font-size: 13px; }
+
+.tabla-card { background: white; border: 1px solid var(--borde); border-radius: 6px; }
+table { width: 100%; border-collapse: collapse; }
+th { background: var(--azul); color: white; padding: 10px 12px; font-size: 13px; text-align: left; }
+td { padding: 9px 12px; font-size: 13px; border-bottom: 1px solid #eee; }
+tr:hover td { background: #f9f9f9; }
+
+.badge { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+.badge-pendiente  { background: #fef9c3; color: #92400e; }
+.badge-confirmada { background: #dcfce7; color: #166534; }
+.badge-cancelada  { background: #fee2e2; color: #991b1b; }
+
+.resumen { display: flex; gap: 12px; margin-top: 16px; }
+.resumen-item { background: white; border: 1px solid var(--borde); border-radius: 6px; padding: 12px 18px; font-size: 13px; text-align: center; flex: 1; }
+.resumen-item strong { display: block; font-size: 22px; color: var(--azul); }
+
+.empty-msg { text-align: center; padding: 30px; color: #888; font-size: 14px; }

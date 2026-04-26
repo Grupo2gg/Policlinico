@@ -1,0 +1,33 @@
+:root {
+    --azul:    #1a3c5e;
+    --teal:    #0d7c6e;
+    --blanco:  #ffffff;
+    --gris:    #f5f5f5;
+    --borde:   #ddd;
+    --texto:   #333;
+    --rojo:    #c0392b;
+    --verde:   #1e8449;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; font-size: 15px; background: var(--gris); color: var(--texto); }
+
+.navbar { background: var(--azul); padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; }
+.navbar .logo { color: white; font-size: 17px; font-weight: bold; }
+.navbar a { color: #ccc; text-decoration: none; margin-left: 14px; font-size: 14px; }
+.navbar a:hover { color: white; }
+
+.footer { background: var(--azul); color: #aaa; text-align: center; padding: 14px; font-size: 13px; margin-top: 40px; }
+
+.container { max-width: 860px; margin: 30px auto; padding: 0 20px; }
+
+.page-title { color: var(--azul); font-size: 22px; margin-bottom: 20px; font-weight: bold; }
+
+.servicios-grid { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; }
+.servicio-item { flex: 1; min-width: 180px; background: white; border: 1px solid var(--borde); border-radius: 6px; padding: 18px; }
+.servicio-item h3 { color: var(--azul); font-size: 15px; margin-bottom: 6px; }
+.servicio-item p  { font-size: 13px; color: #666; }
+.servicio-item .precio { color: var(--teal); font-weight: bold; margin-top: 8px; font-size: 14px; }
+
+.cta { background: var(--azul); color: white; border-radius: 6px; padding: 24px; text-align: center; }
+.cta h3 { font-size: 18px; margin-bottom: 10px; }
+.cta a { background: var(--teal); color: white; padding: 10px 24px; border-radius: 4px; text-decoration: none; font-size: 14px; }
