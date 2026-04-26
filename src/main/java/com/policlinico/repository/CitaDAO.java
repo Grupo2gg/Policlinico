@@ -18,4 +18,6 @@ public interface CitaDAO {
     List<Cita> findByUsuarioId(int usuarioId);
 
     List<Cita> findByEstado(String estado);
+
+    List<String> findHorasDisponibles();
 }

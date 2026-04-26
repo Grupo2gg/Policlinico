@@ -3,8 +3,6 @@ package com.policlinico.controller;
 import com.policlinico.exception.CitaNotFoundException;
 import com.policlinico.model.Cita;
 import com.policlinico.model.Usuario;
-import java.util.Arrays;
-import java.util.List;
 import com.policlinico.service.CitaService;
 import com.policlinico.service.EspecialidadService;
 import java.time.LocalDate;
@@ -65,7 +63,7 @@ public class CitaController {
         }
         model.addAttribute("especialidades", especialidadService.obtenerActivas());
         model.addAttribute("medicos", especialidadService.obtenerMedicos());
-        model.addAttribute("horas", obtenerHorasDisponibles());
+        model.addAttribute("horas", citaService.obtenerHorasDisponibles());
         model.addAttribute("cita", cita);
         model.addAttribute("hoy", LocalDate.now().toString());
         return "cita/form";
@@ -81,7 +79,7 @@ public class CitaController {
             model.addAttribute("error", "La fecha no puede ser en el pasado");
             model.addAttribute("especialidades", especialidadService.obtenerActivas());
             model.addAttribute("medicos", especialidadService.obtenerMedicos());
-            model.addAttribute("horas", obtenerHorasDisponibles());
+            model.addAttribute("horas", citaService.obtenerHorasDisponibles());
             model.addAttribute("cita", cita);
             model.addAttribute("hoy", LocalDate.now().toString());
             return "cita/form";
@@ -92,7 +90,7 @@ public class CitaController {
             model.addAttribute("error", "Ya tienes una cita registrada para la misma fecha y hora");
             model.addAttribute("especialidades", especialidadService.obtenerActivas());
             model.addAttribute("medicos", especialidadService.obtenerMedicos());
-            model.addAttribute("horas", obtenerHorasDisponibles());
+            model.addAttribute("horas", citaService.obtenerHorasDisponibles());
             model.addAttribute("cita", cita);
             model.addAttribute("hoy", LocalDate.now().toString());
             return "cita/form";
@@ -115,7 +113,7 @@ public class CitaController {
         }
         model.addAttribute("cita", cita);
         model.addAttribute("medicos", especialidadService.obtenerMedicos());
-        model.addAttribute("horas", obtenerHorasDisponibles());
+        model.addAttribute("horas", citaService.obtenerHorasDisponibles());
         model.addAttribute("hoy", LocalDate.now().toString());
         return "cita/form";
     }
@@ -173,10 +171,5 @@ public class CitaController {
 
     private Usuario obtenerUsuarioSesion(HttpSession session) {
         return (Usuario) session.getAttribute("usuario");
-    }
-
-    private List<String> obtenerHorasDisponibles() {
-        return Arrays.asList("08:00", "09:00", "10:00", "11:00",
-                "12:00", "14:00", "15:00", "16:00", "17:00");
     }
 }

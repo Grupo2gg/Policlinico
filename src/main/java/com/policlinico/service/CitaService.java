@@ -22,4 +22,6 @@ public interface CitaService {
     List<Cita> obtenerPorUsuario(int usuarioId);
 
     List<Cita> obtenerPorEstado(String estado);
+
+    List<String> obtenerHorasDisponibles();
 }

@@ -70,4 +70,9 @@ public class CitaServiceImpl implements CitaService {
     public List<Cita> obtenerPorEstado(String estado) {
         return citaDAO.findByEstado(estado);
     }
+
+    @Override
+    public List<String> obtenerHorasDisponibles() {
+        return citaDAO.findHorasDisponibles();
+    }
 }

@@ -3,6 +3,7 @@ package com.policlinico.repository.impl;
 import com.policlinico.model.Cita;
 import com.policlinico.repository.CitaDAO;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Repository;
 public class CitaDAOImpl implements CitaDAO {
 
     private static final List<Cita> citas = new ArrayList<>();
+    private static final List<String> horasDisponibles = Arrays.asList(
+            "08:00", "09:00", "10:00", "11:00",
+            "12:00", "14:00", "15:00", "16:00", "17:00");
 
     static {
         citas.add(new Cita(1, 2, "Lucia Paredes", "Dermatologia", "Dra. Valeria Soto", "2026-04-26", "08:00", "PENDIENTE", "Consulta por acné", "2026-04-20"));
@@ -69,5 +73,10 @@ public class CitaDAOImpl implements CitaDAO {
         return citas.stream()
                 .filter(cita -> Objects.equals(cita.getEstado(), estado))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> findHorasDisponibles() {
+        return new ArrayList<>(horasDisponibles);
     }
 }
