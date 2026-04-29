@@ -20,11 +20,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     }
 
     @Override
-    public List<Usuario> findAll() {
-        return new ArrayList<>(usuarios);
-    }
-
-    @Override
     public Usuario findById(int id) {
         return usuarios.stream()
                 .filter(usuario -> usuario.getId() == id)
@@ -55,11 +50,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 return;
             }
         }
-    }
-
-    @Override
-    public void delete(int id) {
-        usuarios.removeIf(usuario -> usuario.getId() == id);
     }
 
     @Override

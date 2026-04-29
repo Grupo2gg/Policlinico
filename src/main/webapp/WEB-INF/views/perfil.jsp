@@ -6,7 +6,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Perfil - Dermo &amp; Plástica</title>
+    <title>Mi Perfil - DERMO; PLASTICA S.R.L.</title>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/perfil.css">
 </head>
@@ -22,6 +22,10 @@
 
         <c:if test="${not empty exito}">
             <div class="alert-success">${exito}</div>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <div class="alert-error">${error}</div>
         </c:if>
 
         <div class="dato-item">

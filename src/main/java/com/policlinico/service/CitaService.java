@@ -5,19 +5,15 @@ import java.util.List;
 
 public interface CitaService {
 
-    List<Cita> obtenerTodas();
-
     Cita obtenerPorId(int id);
+
+    Cita obtenerPorIdDeUsuario(int id, int usuarioId);
 
     void registrarCita(Cita cita);
 
     void actualizarCita(Cita cita);
 
-    void cancelarCita(int id);
-
-    void confirmarCita(int id);
-
-    void eliminarCita(int id);
+    void cancelarCita(int id, int usuarioId);
 
     List<Cita> obtenerPorUsuario(int usuarioId);
 

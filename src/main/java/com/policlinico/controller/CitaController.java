@@ -1,21 +1,22 @@
 package com.policlinico.controller;
 
-import com.policlinico.exception.CitaNotFoundException;
 import com.policlinico.model.Cita;
 import com.policlinico.model.Usuario;
 import com.policlinico.service.CitaService;
 import com.policlinico.service.EspecialidadService;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/cita")
@@ -33,21 +34,15 @@ public class CitaController {
         if (usuario == null) {
             return "redirect:/login";
         }
+        List<Cita> citasUsuario = citaService.obtenerPorUsuario(usuario.getId());
+        List<Cita> citasFiltradas = citasUsuario;
         if (estado != null && !estado.isBlank() && !"TODAS".equalsIgnoreCase(estado)) {
-            model.addAttribute(
-                    "citas",
-                    citaService.obtenerPorEstado(estado).stream()
-                            .filter(cita -> cita.getUsuarioId() == usuario.getId())
-                            .toList());
-        } else {
-            model.addAttribute("citas", citaService.obtenerPorUsuario(usuario.getId()));
+            citasFiltradas = citasUsuario.stream()
+                    .filter(cita -> estado.equalsIgnoreCase(cita.getEstado()))
+                    .collect(Collectors.toList());
         }
-        model.addAttribute("totalPendientes", citaService.obtenerPorEstado("PENDIENTE").stream()
-                .filter(cita -> cita.getUsuarioId() == usuario.getId()).count());
-        model.addAttribute("totalConfirmadas", citaService.obtenerPorEstado("CONFIRMADA").stream()
-                .filter(cita -> cita.getUsuarioId() == usuario.getId()).count());
-        model.addAttribute("totalCanceladas", citaService.obtenerPorEstado("CANCELADA").stream()
-                .filter(cita -> cita.getUsuarioId() == usuario.getId()).count());
+        model.addAttribute("citas", citasFiltradas);
+        cargarResumen(model, citasUsuario);
         model.addAttribute("estadoSeleccionado", estado == null || estado.isBlank() ? "TODAS" : estado);
         return "cita/list";
     }
@@ -61,11 +56,7 @@ public class CitaController {
         if (especialidad != null && !especialidad.isBlank()) {
             cita.setEspecialidad(especialidad);
         }
-        model.addAttribute("especialidades", especialidadService.obtenerActivas());
-        model.addAttribute("medicos", especialidadService.obtenerMedicos());
-        model.addAttribute("horas", citaService.obtenerHorasDisponibles());
-        model.addAttribute("cita", cita);
-        model.addAttribute("hoy", LocalDate.now().toString());
+        cargarFormulario(model, cita);
         return "cita/form";
     }
 
@@ -75,101 +66,101 @@ public class CitaController {
         if (usuario == null) {
             return "redirect:/login";
         }
-        if (LocalDate.parse(cita.getFecha()).isBefore(LocalDate.now())) {
-            model.addAttribute("error", "La fecha no puede ser en el pasado");
-            model.addAttribute("especialidades", especialidadService.obtenerActivas());
-            model.addAttribute("medicos", especialidadService.obtenerMedicos());
-            model.addAttribute("horas", citaService.obtenerHorasDisponibles());
-            model.addAttribute("cita", cita);
-            model.addAttribute("hoy", LocalDate.now().toString());
-            return "cita/form";
-        }
-        boolean existeDuplicada = citaService.obtenerPorUsuario(usuario.getId()).stream()
-                .anyMatch(item -> item.getFecha().equals(cita.getFecha()) && item.getHora().equals(cita.getHora()));
-        if (existeDuplicada) {
-            model.addAttribute("error", "Ya tienes una cita registrada para la misma fecha y hora");
-            model.addAttribute("especialidades", especialidadService.obtenerActivas());
-            model.addAttribute("medicos", especialidadService.obtenerMedicos());
-            model.addAttribute("horas", citaService.obtenerHorasDisponibles());
-            model.addAttribute("cita", cita);
-            model.addAttribute("hoy", LocalDate.now().toString());
-            return "cita/form";
-        }
         cita.setUsuarioId(usuario.getId());
         cita.setNombrePaciente(usuario.getNombre() + " " + usuario.getApellido());
-        citaService.registrarCita(cita);
+        try {
+            citaService.registrarCita(cita);
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("error", ex.getMessage());
+            cargarFormulario(model, cita);
+            return "cita/form";
+        }
         return "redirect:/cita/list";
     }
 
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable int id, HttpSession session, Model model) {
-        if (obtenerUsuarioSesion(session) == null) {
+        Usuario usuario = obtenerUsuarioSesion(session);
+        if (usuario == null) {
             return "redirect:/login";
         }
-        model.addAttribute("especialidades", especialidadService.obtenerActivas());
-        Cita cita = citaService.obtenerPorId(id);
+        Cita cita = citaService.obtenerPorIdDeUsuario(id, usuario.getId());
         if (cita == null) {
-            throw new CitaNotFoundException("La cita solicitada no fue encontrada.");
+            return mostrarNoEncontrado(model, "La cita solicitada no fue encontrada.");
         }
-        model.addAttribute("cita", cita);
-        model.addAttribute("medicos", especialidadService.obtenerMedicos());
-        model.addAttribute("horas", citaService.obtenerHorasDisponibles());
-        model.addAttribute("hoy", LocalDate.now().toString());
+        cargarFormulario(model, cita);
         return "cita/form";
     }
 
     @PostMapping("/actualizar")
-    public String actualizar(@ModelAttribute Cita cita, HttpSession session) {
+    public String actualizar(@ModelAttribute Cita cita, HttpSession session, Model model) {
         Usuario usuario = obtenerUsuarioSesion(session);
         if (usuario == null) {
             return "redirect:/login";
         }
         cita.setUsuarioId(usuario.getId());
-        if (cita.getNombrePaciente() == null || cita.getNombrePaciente().isBlank()) {
-            cita.setNombrePaciente(usuario.getNombre() + " " + usuario.getApellido());
+        cita.setNombrePaciente(usuario.getNombre() + " " + usuario.getApellido());
+        try {
+            citaService.actualizarCita(cita);
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("error", ex.getMessage());
+            cargarFormulario(model, cita);
+            return "cita/form";
         }
-        citaService.actualizarCita(cita);
         return "redirect:/cita/list";
     }
 
     @GetMapping("/cancelar/{id}")
     public String cancelar(@PathVariable int id, HttpSession session) {
-        if (obtenerUsuarioSesion(session) == null) {
+        Usuario usuario = obtenerUsuarioSesion(session);
+        if (usuario == null) {
             return "redirect:/login";
         }
-        if (citaService.obtenerPorId(id) == null) {
-            throw new CitaNotFoundException("La cita solicitada no fue encontrada.");
-        }
-        citaService.cancelarCita(id);
+        citaService.cancelarCita(id, usuario.getId());
         return "redirect:/cita/list";
     }
 
     @GetMapping("/ver/{id}")
     public String ver(@PathVariable int id, HttpSession session, Model model) {
-        if (obtenerUsuarioSesion(session) == null) {
+        Usuario usuario = obtenerUsuarioSesion(session);
+        if (usuario == null) {
             return "redirect:/login";
         }
-        Cita cita = citaService.obtenerPorId(id);
+        Cita cita = citaService.obtenerPorIdDeUsuario(id, usuario.getId());
         if (cita == null) {
-            throw new CitaNotFoundException("La cita solicitada no fue encontrada.");
+            return mostrarNoEncontrado(model, "La cita solicitada no fue encontrada.");
         }
         model.addAttribute("cita", cita);
         return "cita/detalle";
     }
 
-    @GetMapping("/reporte")
-    public String reporte(HttpSession session, Model model) {
-        if (obtenerUsuarioSesion(session) == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("citas", citaService.obtenerTodas());
-        model.addAttribute("totalPendientes", citaService.obtenerPorEstado("PENDIENTE").size());
-        model.addAttribute("totalConfirmadas", citaService.obtenerPorEstado("CONFIRMADA").size());
-        model.addAttribute("totalCanceladas", citaService.obtenerPorEstado("CANCELADA").size());
-        return "cita/reporte";
-    }
-
     private Usuario obtenerUsuarioSesion(HttpSession session) {
         return (Usuario) session.getAttribute("usuario");
+    }
+
+    private void cargarFormulario(Model model, Cita cita) {
+        model.addAttribute("especialidades", especialidadService.obtenerActivas());
+        model.addAttribute("medicos", especialidadService.obtenerMedicos());
+        model.addAttribute("horas", citaService.obtenerHorasDisponibles());
+        model.addAttribute("cita", cita);
+        model.addAttribute("hoy", LocalDate.now().toString());
+    }
+
+    private void cargarResumen(Model model, List<Cita> citas) {
+        model.addAttribute("totalCitas", citas.size());
+        model.addAttribute("totalPendientes", contarPorEstado(citas, "PENDIENTE"));
+        model.addAttribute("totalConfirmadas", contarPorEstado(citas, "CONFIRMADA"));
+        model.addAttribute("totalCanceladas", contarPorEstado(citas, "CANCELADA"));
+    }
+
+    private long contarPorEstado(List<Cita> citas, String estado) {
+        return citas.stream()
+                .filter(cita -> estado.equalsIgnoreCase(cita.getEstado()))
+                .count();
+    }
+
+    private String mostrarNoEncontrado(Model model, String mensaje) {
+        model.addAttribute("mensaje", mensaje);
+        return "error/404";
     }
 }

@@ -13,8 +13,6 @@ public interface CitaDAO {
 
     void update(Cita cita);
 
-    void delete(int id);
-
     List<Cita> findByUsuarioId(int usuarioId);
 
     List<Cita> findByEstado(String estado);

@@ -1,9 +1,7 @@
 package com.policlinico.controller;
 
-import com.policlinico.model.Cita;
 import com.policlinico.model.Servicio;
 import com.policlinico.model.Usuario;
-import com.policlinico.service.CitaService;
 import com.policlinico.service.EspecialidadService;
 import com.policlinico.service.UsuarioService;
 import java.util.ArrayList;
@@ -15,8 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping
@@ -28,8 +26,10 @@ public class UsuarioController {
     @Autowired
     private EspecialidadService especialidadService;
 
-    @Autowired
-    private CitaService citaService;
+    @GetMapping("/")
+    public String inicio() {
+        return "redirect:/main";
+    }
 
     @GetMapping("/login")
     public String mostrarLogin(HttpSession session) {
@@ -46,6 +46,7 @@ public class UsuarioController {
             session.setAttribute("usuario", usuario);
             return "redirect:/main";
         }
+        model.addAttribute("email", email);
         model.addAttribute("error", "Credenciales incorrectas");
         return "login";
     }
@@ -93,7 +94,17 @@ public class UsuarioController {
         }
 
         usuario.setPassword(password.trim());
-        usuarioService.registrarUsuario(usuario);
+        try {
+            if (!usuarioService.registrarUsuario(usuario)) {
+                model.addAttribute("error", "Ya existe una cuenta con ese email");
+                model.addAttribute("usuario", usuario);
+                return "registro";
+            }
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("error", ex.getMessage());
+            model.addAttribute("usuario", usuario);
+            return "registro";
+        }
 
         return "redirect:/login";
     }
@@ -124,19 +135,8 @@ public class UsuarioController {
         servicios.add(new Servicio("Peeling Facial",
                 "Renovación celular y limpieza profunda", "Desde S/ 120"));
         model.addAttribute("servicios", servicios);
+        model.addAttribute("especialidades", especialidadService.obtenerActivas());
         return "publicidad";
-    }
-
-    @GetMapping("/gestion")
-    public String gestion(HttpSession session, Model model) {
-        if (!haySesionActiva(session)) {
-            return "redirect:/login";
-        }
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        List<Cita> ultimas = citaService.obtenerPorUsuario(usuario.getId());
-        model.addAttribute("ultimasCitas", ultimas);
-        model.addAttribute("totalCitas", ultimas.size());
-        return "gestion";
     }
 
     @GetMapping("/perfil")
@@ -147,19 +147,26 @@ public class UsuarioController {
         }
         model.addAttribute("usuario", usuario);
         if (exito != null) {
-            model.addAttribute("exito", true);
+            model.addAttribute("exito", "Datos actualizados correctamente");
         }
         return "perfil";
     }
 
     @PostMapping("/perfil/actualizar")
-    public String actualizarPerfil(@ModelAttribute Usuario usuario, HttpSession session) {
+    public String actualizarPerfil(@ModelAttribute Usuario usuario, HttpSession session, Model model) {
         Usuario usuarioSesion = obtenerUsuarioSesion(session);
         if (usuarioSesion == null) {
             return "redirect:/login";
         }
         usuario.setId(usuarioSesion.getId());
-        usuarioService.actualizarUsuario(usuario);
+        try {
+            usuarioService.actualizarUsuario(usuario);
+        } catch (IllegalArgumentException ex) {
+            Usuario actual = usuarioService.obtenerPorId(usuarioSesion.getId());
+            model.addAttribute("usuario", actual);
+            model.addAttribute("error", ex.getMessage());
+            return "perfil";
+        }
         session.setAttribute("usuario", usuarioService.obtenerPorId(usuario.getId()));
         return "redirect:/perfil?exito=1";
     }

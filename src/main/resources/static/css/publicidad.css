@@ -27,6 +27,9 @@ body { font-family: Arial, sans-serif; font-size: 15px; background: var(--gris);
 .servicio-item h3 { color: var(--azul); font-size: 15px; margin-bottom: 6px; }
 .servicio-item p  { font-size: 13px; color: #666; }
 .servicio-item .precio { color: var(--teal); font-weight: bold; margin-top: 8px; font-size: 14px; }
+.detalle-item { font-size: 13px; color: #555; margin-top: 6px; }
+.btn-detalle { display: inline-block; margin-top: 12px; background: var(--azul); color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 13px; }
+.btn-detalle:hover { background: #0d2d47; }
 
 .cta { background: var(--azul); color: white; border-radius: 6px; padding: 24px; text-align: center; }
 .cta h3 { font-size: 18px; margin-bottom: 10px; }

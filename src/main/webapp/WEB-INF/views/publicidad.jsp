@@ -6,7 +6,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Servicios - Dermo &amp; Plástica</title>
+    <title>Servicios - DERMO; PLASTICA S.R.L.</title>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/publicidad.css">
 </head>
@@ -23,6 +23,23 @@
                 <h3>${s.nombre}</h3>
                 <p>${s.descripcion}</p>
                 <div class="precio">${s.precio}</div>
+            </div>
+        </c:forEach>
+    </div>
+
+    <h2 class="page-title">Especialidades Disponibles</h2>
+
+    <div class="servicios-grid">
+        <c:forEach var="esp" items="${especialidades}">
+            <div class="servicio-item">
+                <h3>${esp.nombre}</h3>
+                <p>${esp.descripcion}</p>
+                <div class="detalle-item"><strong>Médico:</strong> ${esp.medico}</div>
+                <div class="detalle-item"><strong>Horario:</strong> ${esp.horarioDisponible}</div>
+                <a class="btn-detalle"
+                   href="${pageContext.request.contextPath}/especialidad/ver/${esp.id}">
+                    Ver detalle
+                </a>
             </div>
         </c:forEach>
     </div>

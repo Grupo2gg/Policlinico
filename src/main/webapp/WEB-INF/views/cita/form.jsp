@@ -6,7 +6,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Cita - Dermo &amp; Plástica</title>
+    <title>Cita - DERMO; PLASTICA S.R.L.</title>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/cita-form.css">
 </head>
@@ -66,7 +66,7 @@
 
         <div class="form-group">
             <label>Fecha</label>
-            <input type="date" name="fecha" value="${cita.fecha}" required/>
+            <input type="date" name="fecha" value="${cita.fecha}" min="${hoy}" required/>
         </div>
 
         <div class="form-group">

@@ -6,7 +6,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mis Citas - Dermo &amp; Plástica</title>
+    <title>Mis Citas - DERMO; PLASTICA S.R.L.</title>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/cita-list.css">
 </head>
@@ -27,10 +27,10 @@
         <label>Filtrar por estado:</label>
         <form method="get">
             <select name="estado" onchange="this.form.submit()">
-                <option value="">Todas</option>
-                <option value="PENDIENTE">Pendiente</option>
-                <option value="CONFIRMADA">Confirmada</option>
-                <option value="CANCELADA">Cancelada</option>
+                <option value="" ${estadoSeleccionado == 'TODAS' ? 'selected' : ''}>Todas</option>
+                <option value="PENDIENTE" ${estadoSeleccionado == 'PENDIENTE' ? 'selected' : ''}>Pendiente</option>
+                <option value="CONFIRMADA" ${estadoSeleccionado == 'CONFIRMADA' ? 'selected' : ''}>Confirmada</option>
+                <option value="CANCELADA" ${estadoSeleccionado == 'CANCELADA' ? 'selected' : ''}>Cancelada</option>
             </select>
         </form>
     </div>
@@ -88,7 +88,7 @@
 
     <div class="resumen">
         <div class="resumen-item">
-            <strong>${fn:length(citas)}</strong>
+            <strong>${totalCitas}</strong>
             Total
         </div>
         <div class="resumen-item">

@@ -14,8 +14,8 @@ public class CitaDAOImpl implements CitaDAO {
 
     private static final List<Cita> citas = new ArrayList<>();
     private static final List<String> horasDisponibles = Arrays.asList(
-            "08:00", "09:00", "10:00", "11:00",
-            "12:00", "14:00", "15:00", "16:00", "17:00");
+            "08:00", "09:00", "10:00", "10:30", "11:00",
+            "12:00", "14:00", "15:00", "16:00", "16:30", "17:00");
 
     static {
         citas.add(new Cita(1, 2, "Lucia Paredes", "Dermatologia", "Dra. Valeria Soto", "2026-04-26", "08:00", "PENDIENTE", "Consulta por acné", "2026-04-20"));
@@ -54,11 +54,6 @@ public class CitaDAOImpl implements CitaDAO {
                 return;
             }
         }
-    }
-
-    @Override
-    public void delete(int id) {
-        citas.removeIf(cita -> cita.getId() == id);
     }
 
     @Override

@@ -6,7 +6,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registro - Dermo &amp; Plástica</title>
+    <title>Registro - DERMO; PLASTICA S.R.L.</title>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/registro.css">
 </head>
@@ -25,31 +25,31 @@
         <div class="form-row">
             <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" name="nombre" required/>
+                <input type="text" name="nombre" value="${usuario.nombre}" required/>
             </div>
             <div class="form-group">
                 <label>Apellido</label>
-                <input type="text" name="apellido" required/>
+                <input type="text" name="apellido" value="${usuario.apellido}" required/>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group">
                 <label>DNI</label>
                 <input type="text" name="dni"
-                       pattern="[0-9]{8}" maxlength="8" required/>
+                       value="${usuario.dni}" pattern="[0-9]{8}" maxlength="8" required/>
             </div>
             <div class="form-group">
                 <label>Teléfono</label>
-                <input type="text" name="telefono" required/>
+                <input type="text" name="telefono" value="${usuario.telefono}" required/>
             </div>
         </div>
         <div class="form-group">
             <label>Email</label>
-            <input type="email" name="email" required/>
+            <input type="email" name="email" value="${usuario.email}" required/>
         </div>
         <div class="form-group">
             <label>Fecha de Nacimiento</label>
-            <input type="date" name="fechaNacimiento" required/>
+            <input type="date" name="fechaNacimiento" value="${usuario.fechaNacimiento}" required/>
         </div>
         <div class="form-row">
             <div class="form-group">

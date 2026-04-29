@@ -31,6 +31,10 @@ public class EspecialidadController {
             return "redirect:/login";
         }
         model.addAttribute("especialidad", especialidadService.obtenerPorId(id));
+        if (model.getAttribute("especialidad") == null) {
+            model.addAttribute("mensaje", "La especialidad solicitada no fue encontrada.");
+            return "error/404";
+        }
         return "especialidad/detalle";
     }
 }

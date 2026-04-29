@@ -6,7 +6,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Dermo &amp; Plástica</title>
+    <title>Login - DERMO; PLASTICA S.R.L.</title>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/login.css">
 </head>
@@ -23,7 +23,7 @@
     <form action="${pageContext.request.contextPath}/login" method="post">
         <div class="form-group">
             <label>Email</label>
-            <input type="email" name="email" required placeholder="correo@ejemplo.com"/>
+            <input type="email" name="email" value="${email}" required placeholder="correo@ejemplo.com"/>
         </div>
         <div class="form-group">
             <label>Contraseña</label>

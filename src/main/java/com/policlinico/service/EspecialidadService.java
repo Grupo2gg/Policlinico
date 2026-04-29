@@ -5,8 +5,6 @@ import java.util.List;
 
 public interface EspecialidadService {
 
-    List<Especialidad> obtenerTodas();
-
     List<Especialidad> obtenerActivas();
 
     Especialidad obtenerPorId(int id);

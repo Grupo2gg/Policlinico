@@ -15,11 +15,6 @@ public class EspecialidadServiceImpl implements EspecialidadService {
     private EspecialidadDAO especialidadDAO;
 
     @Override
-    public List<Especialidad> obtenerTodas() {
-        return especialidadDAO.findAll();
-    }
-
-    @Override
     public List<Especialidad> obtenerActivas() {
         return especialidadDAO.findActivas();
     }
