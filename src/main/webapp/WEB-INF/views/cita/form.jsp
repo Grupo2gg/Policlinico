@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <title>Cita - DERMO; PLASTICA S.R.L.</title>
     <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/css/layout.css">
+    <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/cita-form.css">
 </head>
 <body>

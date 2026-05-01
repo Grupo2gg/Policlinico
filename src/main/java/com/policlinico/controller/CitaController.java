@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/cita")
@@ -79,14 +80,14 @@ public class CitaController {
     }
 
     @GetMapping("/editar/{id}")
-    public String editar(@PathVariable int id, HttpSession session, Model model) {
+    public String editar(@PathVariable int id, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         Usuario usuario = obtenerUsuarioSesion(session);
         if (usuario == null) {
             return "redirect:/login";
         }
         Cita cita = citaService.obtenerPorIdDeUsuario(id, usuario.getId());
         if (cita == null) {
-            return mostrarNoEncontrado(model, "La cita solicitada no fue encontrada.");
+            return mostrarNoEncontrado(redirectAttributes, "La cita solicitada no fue encontrada.");
         }
         cargarFormulario(model, cita);
         return "cita/form";
@@ -121,14 +122,14 @@ public class CitaController {
     }
 
     @GetMapping("/ver/{id}")
-    public String ver(@PathVariable int id, HttpSession session, Model model) {
+    public String ver(@PathVariable int id, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         Usuario usuario = obtenerUsuarioSesion(session);
         if (usuario == null) {
             return "redirect:/login";
         }
         Cita cita = citaService.obtenerPorIdDeUsuario(id, usuario.getId());
         if (cita == null) {
-            return mostrarNoEncontrado(model, "La cita solicitada no fue encontrada.");
+            return mostrarNoEncontrado(redirectAttributes, "La cita solicitada no fue encontrada.");
         }
         model.addAttribute("cita", cita);
         return "cita/detalle";
@@ -159,8 +160,8 @@ public class CitaController {
                 .count();
     }
 
-    private String mostrarNoEncontrado(Model model, String mensaje) {
-        model.addAttribute("mensaje", mensaje);
-        return "error/404";
+    private String mostrarNoEncontrado(RedirectAttributes redirectAttributes, String mensaje) {
+        redirectAttributes.addFlashAttribute("mensaje", mensaje);
+        return "redirect:/cita/list";
     }
 }

@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Detalle de Especialidad</title>
     <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/css/layout.css">
+    <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>

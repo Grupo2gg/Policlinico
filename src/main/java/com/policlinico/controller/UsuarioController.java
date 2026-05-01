@@ -172,7 +172,16 @@ public class UsuarioController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logoutGet(HttpSession session) {
+        return cerrarSesion(session);
+    }
+
+    @PostMapping("/logout")
+    public String logoutPost(HttpSession session) {
+        return cerrarSesion(session);
+    }
+
+    private String cerrarSesion(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
     }

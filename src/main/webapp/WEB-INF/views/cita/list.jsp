@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <title>Mis Citas - DERMO; PLASTICA S.R.L.</title>
     <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/css/layout.css">
+    <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/cita-list.css">
 </head>
 <body>
@@ -22,6 +24,12 @@
             + Nueva Cita
         </a>
     </div>
+
+    <c:if test="${not empty mensaje}">
+        <div class="alert alert-warning" role="alert">
+            ${mensaje}
+        </div>
+    </c:if>
 
     <div class="filtro">
         <label>Filtrar por estado:</label>

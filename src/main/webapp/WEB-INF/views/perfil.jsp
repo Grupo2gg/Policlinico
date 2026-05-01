@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <title>Mi Perfil - DERMO; PLASTICA S.R.L.</title>
     <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/css/layout.css">
+    <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/perfil.css">
 </head>
 <body>

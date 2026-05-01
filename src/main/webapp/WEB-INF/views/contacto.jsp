@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <title>Contacto - Dermo &amp; Plástica</title>
     <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/css/layout.css">
+    <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/contacto.css">
 </head>
 <body>
