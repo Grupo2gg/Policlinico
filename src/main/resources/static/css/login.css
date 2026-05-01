@@ -12,7 +12,8 @@
 body { font-family: Arial, sans-serif; font-size: 15px; background: var(--gris); color: var(--texto); }
 
 /* Solo para la pagina de login */
-body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: var(--gris); }
+body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: url("/img/login-bg.jpg") no-repeat center center;
+    background-size: cover; }
 
 .login-box { background: white; padding: 36px; border-radius: 8px; border: 1px solid var(--borde); width: 100%; max-width: 360px; }
 
