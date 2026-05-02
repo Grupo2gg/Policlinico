@@ -31,6 +31,7 @@ public class Cita {
         this.fechaCreacion = fechaCreacion;
     }
 
+    /** @return ID único de la cita */
     public int getId() {
         return id;
     }
@@ -39,6 +40,7 @@ public class Cita {
         this.id = id;
     }
 
+    /** @return ID del usuario propietario de la cita */
     public int getUsuarioId() {
         return usuarioId;
     }
@@ -47,6 +49,7 @@ public class Cita {
         this.usuarioId = usuarioId;
     }
 
+    /** @return Nombre completo del paciente */
     public String getNombrePaciente() {
         return nombrePaciente;
     }
@@ -55,6 +58,7 @@ public class Cita {
         this.nombrePaciente = nombrePaciente;
     }
 
+    /** @return Especialidad médica de la cita */
     public String getEspecialidad() {
         return especialidad;
     }
@@ -63,6 +67,7 @@ public class Cita {
         this.especialidad = especialidad;
     }
 
+    /** @return Nombre del médico asignado */
     public String getMedico() {
         return medico;
     }
@@ -71,6 +76,7 @@ public class Cita {
         this.medico = medico;
     }
 
+    /** @return Fecha de la cita en formato yyyy-MM-dd */
     public String getFecha() {
         return fecha;
     }
@@ -79,6 +85,7 @@ public class Cita {
         this.fecha = fecha;
     }
 
+    /** @return Hora de la cita en formato HH:mm */
     public String getHora() {
         return hora;
     }
@@ -87,6 +94,7 @@ public class Cita {
         this.hora = hora;
     }
 
+    /** @return Estado actual: PENDIENTE, CONFIRMADA o CANCELADA */
     public String getEstado() {
         return estado;
     }
@@ -95,6 +103,7 @@ public class Cita {
         this.estado = estado;
     }
 
+    /** @return Motivo de consulta ingresado por el paciente */
     public String getMotivo() {
         return motivo;
     }
@@ -103,6 +112,7 @@ public class Cita {
         this.motivo = motivo;
     }
 
+    /** @return Fecha en que se registró la cita */
     public String getFechaCreacion() {
         return fechaCreacion;
     }
