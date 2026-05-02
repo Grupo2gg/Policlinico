@@ -40,7 +40,14 @@
             </div>
             <div class="form-group">
                 <label>Teléfono</label>
-                <input type="text" name="telefono" value="${usuario.telefono}" required/>
+                <input type="text" 
+                 name="telefono"
+                  value="${usuario.telefono}"
+                       minlength="9"
+                       maxlength="9"
+                       pattern="[0-9]{9}"
+                       title="Debe ingresar exactamente 9 números"            
+                       required/>
             </div>
         </div>
         <div class="form-group">
