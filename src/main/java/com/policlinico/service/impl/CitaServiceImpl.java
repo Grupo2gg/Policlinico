@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CitaServiceImpl implements CitaService {
 
+    private static final String ESTADO_PENDIENTE   = "PENDIENTE";
+    private static final String ESTADO_CANCELADA   = "CANCELADA";
+
     @Autowired
     private CitaDAO citaDAO;
 
@@ -39,7 +42,7 @@ public class CitaServiceImpl implements CitaService {
         }
         cita.setFechaCreacion(LocalDate.now().toString());
         if (cita.getEstado() == null || cita.getEstado().isBlank()) {
-            cita.setEstado("PENDIENTE");
+            cita.setEstado(ESTADO_PENDIENTE);
         }
         citaDAO.save(cita);
     }
@@ -76,10 +79,10 @@ public class CitaServiceImpl implements CitaService {
         if (cita == null) {
             throw new IllegalArgumentException("La cita solicitada no fue encontrada.");
         }
-        if (!"PENDIENTE".equalsIgnoreCase(cita.getEstado())) {
+        if (!ESTADO_PENDIENTE.equalsIgnoreCase(cita.getEstado())) {
             return;
         }
-        cita.setEstado("CANCELADA");
+        cita.setEstado(ESTADO_CANCELADA);
         citaDAO.update(cita);
     }
 
@@ -98,6 +101,9 @@ public class CitaServiceImpl implements CitaService {
         return citaDAO.findHorasDisponibles();
     }
 
+    /**
+     * Valida los campos obligatorios de una cita antes de guardarla o actualizarla.
+     */
     private void validarCita(Cita cita) {
         if (cita == null) {
             throw new IllegalArgumentException("La cita es obligatoria");
@@ -131,6 +137,7 @@ public class CitaServiceImpl implements CitaService {
         }
     }
 
+    /** Verifica si el usuario ya tiene otra cita en la misma fecha y hora. */
     private boolean tieneCitaDuplicada(Cita cita, int citaIdExcluir) {
         return citaDAO.findByUsuarioId(cita.getUsuarioId()).stream()
                 .filter(item -> item.getId() != citaIdExcluir)
@@ -138,10 +145,11 @@ public class CitaServiceImpl implements CitaService {
                         && item.getHora().equals(cita.getHora()));
     }
 
+    /** Verifica si el médico ya tiene otra cita activa en el mismo horario. */
     private boolean horarioOcupadoPorOtroPaciente(Cita cita, int citaIdExcluir) {
         return citaDAO.findAll().stream()
                 .filter(item -> item.getId() != citaIdExcluir)
-                .filter(item -> !"CANCELADA".equalsIgnoreCase(item.getEstado()))
+                .filter(item -> !ESTADO_CANCELADA.equalsIgnoreCase(item.getEstado()))
                 .anyMatch(item -> item.getFecha().equals(cita.getFecha())
                         && item.getHora().equals(cita.getHora())
                         && item.getMedico().equals(cita.getMedico()));
