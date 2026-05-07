@@ -20,8 +20,28 @@ public class EspecialidadServiceImpl implements EspecialidadService {
     }
 
     @Override
+    public List<Especialidad> obtenerTodas() {
+        return especialidadDAO.findAll();
+    }
+
+    @Override
     public Especialidad obtenerPorId(int id) {
         return especialidadDAO.findById(id);
+    }
+
+    @Override
+    public void registrar(Especialidad especialidad) {
+        especialidadDAO.save(especialidad);
+    }
+
+    @Override
+    public void actualizar(Especialidad especialidad) {
+        especialidadDAO.update(especialidad);
+    }
+
+    @Override
+    public void eliminar(int id) {
+        especialidadDAO.delete(id);
     }
 
     @Override

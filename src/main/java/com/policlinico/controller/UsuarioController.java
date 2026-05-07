@@ -1,11 +1,10 @@
 package com.policlinico.controller;
 
-import com.policlinico.model.Servicio;
 import com.policlinico.model.Usuario;
 import com.policlinico.service.EspecialidadService;
 import com.policlinico.service.UsuarioService;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping
 public class UsuarioController {
 
+    // Servicio de negocio para autenticacion y gestion de usuarios.
     @Autowired
     private UsuarioService usuarioService;
 
@@ -27,24 +27,30 @@ public class UsuarioController {
     private EspecialidadService especialidadService;
 
     @GetMapping("/")
-    public String inicio() {
-        return "redirect:/main";
+    public String inicio(HttpSession session) {
+        Usuario usuario = obtenerUsuarioSesion(session);
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+        return redirigirSegunRol(usuario);
     }
 
     @GetMapping("/login")
     public String mostrarLogin(HttpSession session) {
         if (session.getAttribute("usuario") != null) {
-            return "redirect:/main";
+            return redirigirSegunRol((Usuario) session.getAttribute("usuario"));
         }
         return "login";
     }
 
     @PostMapping("/login")
     public String login(String email, String password, Model model, HttpSession session) {
+        // La vista manda credenciales; el controlador las delega al servicio.
         Usuario usuario = usuarioService.login(email, password);
         if (usuario != null) {
+            // La sesion crea el enlace entre autenticacion y el resto de controladores.
             session.setAttribute("usuario", usuario);
-            return "redirect:/main";
+            return redirigirSegunRol(usuario);
         }
         model.addAttribute("email", email);
         model.addAttribute("error", "Credenciales incorrectas");
@@ -66,6 +72,7 @@ public class UsuarioController {
             @RequestParam("confirmar") String confirmar,
             Model model) {
 
+        // Estas validaciones son de entrada del formulario antes de registrar.
         if (!password.trim().equals(confirmar.trim())) {
             model.addAttribute("error", "Las contraseñas no coinciden");
             model.addAttribute("usuario", usuario);
@@ -95,6 +102,7 @@ public class UsuarioController {
 
         usuario.setPassword(password.trim());
         try {
+            // El registro real se delega al servicio para centralizar reglas.
             if (!usuarioService.registrarUsuario(usuario)) {
                 model.addAttribute("error", "Ya existe una cuenta con ese email");
                 model.addAttribute("usuario", usuario);
@@ -111,9 +119,11 @@ public class UsuarioController {
 
     @GetMapping("/main")
     public String main(HttpSession session, Model model) {
-        if (haySesionActiva(session)) {
-            model.addAttribute("usuario", obtenerUsuarioSesion(session));
+        Usuario usuario = obtenerUsuarioSesion(session);
+        if (usuario == null) {
+            return "redirect:/login";
         }
+        model.addAttribute("usuario", usuario);
         model.addAttribute("especialidades", especialidadService.obtenerActivas());
         return "main";
     }
@@ -125,24 +135,45 @@ public class UsuarioController {
 
     @GetMapping("/publicidad")
     public String publicidad(Model model) {
-        List<Servicio> servicios = new ArrayList<>();
-        servicios.add(new Servicio("Consulta Dermatológica",
-                "Evaluación completa de tu piel", "Desde S/ 80"));
-        servicios.add(new Servicio("Tratamiento con Láser",
-                "Eliminación de manchas y rejuvenecimiento", "Desde S/ 150"));
-        servicios.add(new Servicio("Cirugía Estética",
-                "Procedimientos con tecnología moderna", "Desde S/ 500"));
-        servicios.add(new Servicio("Peeling Facial",
-                "Renovación celular y limpieza profunda", "Desde S/ 120"));
+        List<Map<String, String>> servicios = List.of(
+                Map.of("nombre", "Consulta Dermatológica",
+                        "descripcion", "Evaluación completa de tu piel",
+                        "precio", "Desde S/ 80"),
+                Map.of("nombre", "Tratamiento con Láser",
+                        "descripcion", "Eliminación de manchas y rejuvenecimiento",
+                        "precio", "Desde S/ 150"),
+                Map.of("nombre", "Cirugía Estética",
+                        "descripcion", "Procedimientos con tecnología moderna",
+                        "precio", "Desde S/ 500"),
+                Map.of("nombre", "Peeling Facial",
+                        "descripcion", "Renovación celular y limpieza profunda",
+                        "precio", "Desde S/ 120")
+        );
         model.addAttribute("servicios", servicios);
         model.addAttribute("especialidades", especialidadService.obtenerActivas());
         return "publicidad";
     }
 
-    @GetMapping("/perfil")
-    public String perfil(HttpSession session, Model model, String exito) {
+    @GetMapping("/citas")
+    public String citas(HttpSession session) {
         Usuario usuario = obtenerUsuarioSesion(session);
         if (usuario == null) {
+            return "redirect:/login";
+        }
+        if (!"PACIENTE".equals(usuario.getRol())) {
+            return "redirect:/login";
+        }
+        return "redirect:/cita/list";
+    }
+
+    @GetMapping("/perfil")
+    public String perfil(HttpSession session, Model model, String exito) {
+        // Se toma el usuario de sesion porque es la fuente confiable en la capa web.
+        Usuario usuario = obtenerUsuarioSesion(session);
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+        if (!"PACIENTE".equals(usuario.getRol())) {
             return "redirect:/login";
         }
         model.addAttribute("usuario", usuario);
@@ -156,6 +187,9 @@ public class UsuarioController {
     public String actualizarPerfil(@ModelAttribute Usuario usuario, HttpSession session, Model model) {
         Usuario usuarioSesion = obtenerUsuarioSesion(session);
         if (usuarioSesion == null) {
+            return "redirect:/login";
+        }
+        if (!"PACIENTE".equals(usuarioSesion.getRol())) {
             return "redirect:/login";
         }
         usuario.setId(usuarioSesion.getId());
@@ -172,25 +206,34 @@ public class UsuarioController {
     }
 
     @GetMapping("/logout")
-    public String logoutGet(HttpSession session) {
-        return cerrarSesion(session);
-    }
-
-    @PostMapping("/logout")
-    public String logoutPost(HttpSession session) {
-        return cerrarSesion(session);
-    }
-
-    private String cerrarSesion(HttpSession session) {
+    public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
     }
 
-    private boolean haySesionActiva(HttpSession session) {
-        return session.getAttribute("usuario") != null;
+    @PostMapping("/logout")
+    public String logoutPost(HttpSession session) {
+        Usuario usuario = obtenerUsuarioSesion(session);
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+        return cerrarSesion(session);
+    }
+
+    private String cerrarSesion(HttpSession session) {
+        // Rompe el enlace de autenticacion entre la capa web y los datos del usuario.
+        session.invalidate();
+        return "redirect:/login";
     }
 
     private Usuario obtenerUsuarioSesion(HttpSession session) {
         return (Usuario) session.getAttribute("usuario");
+    }
+
+    private String redirigirSegunRol(Usuario usuario) {
+        if ("ADMIN".equals(usuario.getRol())) {
+            return "redirect:/admin/dashboard";
+        }
+        return "redirect:/citas";
     }
 }

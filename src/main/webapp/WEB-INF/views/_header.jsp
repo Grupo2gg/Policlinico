@@ -5,10 +5,19 @@
         <a href="${pageContext.request.contextPath}/main">Inicio</a>
 
         <c:if test="${not empty sessionScope.usuario}">
-            <a href="${pageContext.request.contextPath}/cita/list">Mis Citas</a>
+            <c:choose>
+                <c:when test="${sessionScope.usuario.rol == 'ADMIN'}">
+                    <a href="${pageContext.request.contextPath}/admin/dashboard">Panel Admin</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/citas">Mis Citas</a>
+                </c:otherwise>
+            </c:choose>
             <a href="${pageContext.request.contextPath}/publicidad">Promociones</a>
             <a href="${pageContext.request.contextPath}/contacto">Contacto</a>
-            <a href="${pageContext.request.contextPath}/perfil">Mi cuenta</a>
+            <c:if test="${sessionScope.usuario.rol != 'ADMIN'}">
+                <a href="${pageContext.request.contextPath}/perfil">Mi cuenta</a>
+            </c:if>
             <span class="navbar-user">
                 ${sessionScope.usuario.nombre} ${sessionScope.usuario.apellido}
             </span>

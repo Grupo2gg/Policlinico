@@ -2,6 +2,9 @@ package com.policlinico.model;
 
 public class Usuario {
 
+    public static final String ROL_PACIENTE = "PACIENTE";
+    public static final String ROL_ADMIN = "ADMIN";
+
     private int id;
     private String nombre;
     private String apellido;
@@ -10,9 +13,16 @@ public class Usuario {
     private String telefono;
     private String dni;
     private String fechaNacimiento;
-    private String rol = "PACIENTE";
+    private String rol = ROL_PACIENTE;
 
     public Usuario() {
+    }
+
+    public Usuario(int id, String nombre, String email, String password) {
+        this.id = id;
+        this.nombre = nombre;
+        this.email = email;
+        this.password = password;
     }
 
     public Usuario(int id, String nombre, String apellido, String email, String password,
@@ -100,7 +110,6 @@ public class Usuario {
         this.rol = rol;
     }
 
-    @Override
     public String toString() {
         return "Usuario{" +
                 "id=" + id +

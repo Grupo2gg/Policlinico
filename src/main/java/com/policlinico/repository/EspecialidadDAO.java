@@ -9,5 +9,11 @@ public interface EspecialidadDAO {
 
     Especialidad findById(int id);
 
+    void save(Especialidad especialidad);
+
+    void update(Especialidad especialidad);
+
+    void delete(int id);
+
     List<Especialidad> findActivas();
 }

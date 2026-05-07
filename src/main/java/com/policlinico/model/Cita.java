@@ -4,6 +4,8 @@ public class Cita {
 
     private int id;
     private int usuarioId;
+    private int horarioId;
+    private int estadoId;
     private String nombrePaciente;
     private String especialidad;
     private String medico;
@@ -14,6 +16,14 @@ public class Cita {
     private String fechaCreacion;
 
     public Cita() {
+    }
+
+    public Cita(int id, int usuarioId, int horarioId, int estadoId, String motivo) {
+        this.id = id;
+        this.usuarioId = usuarioId;
+        this.horarioId = horarioId;
+        this.estadoId = estadoId;
+        this.motivo = motivo;
     }
 
     public Cita(int id, int usuarioId, String nombrePaciente, String especialidad,
@@ -31,6 +41,15 @@ public class Cita {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public Cita(int id, int usuarioId, int horarioId, int estadoId,
+                String nombrePaciente, String especialidad, String medico,
+                String fecha, String hora, String estado, String motivo,
+                String fechaCreacion) {
+        this(id, usuarioId, nombrePaciente, especialidad, medico, fecha, hora, estado, motivo, fechaCreacion);
+        this.horarioId = horarioId;
+        this.estadoId = estadoId;
+    }
+
     public int getId() {
         return id;
     }
@@ -45,6 +64,22 @@ public class Cita {
 
     public void setUsuarioId(int usuarioId) {
         this.usuarioId = usuarioId;
+    }
+
+    public int getHorarioId() {
+        return horarioId;
+    }
+
+    public void setHorarioId(int horarioId) {
+        this.horarioId = horarioId;
+    }
+
+    public int getEstadoId() {
+        return estadoId;
+    }
+
+    public void setEstadoId(int estadoId) {
+        this.estadoId = estadoId;
     }
 
     public String getNombrePaciente() {
@@ -111,11 +146,12 @@ public class Cita {
         this.fechaCreacion = fechaCreacion;
     }
 
-    @Override
     public String toString() {
         return "Cita{" +
                 "id=" + id +
                 ", usuarioId=" + usuarioId +
+                ", horarioId=" + horarioId +
+                ", estadoId=" + estadoId +
                 ", nombrePaciente='" + nombrePaciente + '\'' +
                 ", especialidad='" + especialidad + '\'' +
                 ", medico='" + medico + '\'' +

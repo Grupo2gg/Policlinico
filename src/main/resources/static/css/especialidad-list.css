@@ -1,6 +1,7 @@
 .container { max-width: 860px; margin: 30px auto; padding: 0 20px; }
 
 .page-title { color: var(--azul); font-size: 22px; margin-bottom: 20px; font-weight: bold; }
+.page-subtitle { color: #666; font-size: 14px; margin: -12px 0 20px; }
 
 .grid { display: flex; flex-wrap: wrap; gap: 16px; }
 .esp-card { flex: 1; min-width: 220px; background: white; border: 1px solid var(--borde); border-radius: 6px; padding: 20px; }
@@ -13,3 +14,29 @@
 
 .btn-ver { display: inline-block; margin-top: 12px; padding: 7px 16px; background: var(--azul); color: white; border-radius: 4px; text-decoration: none; font-size: 13px; }
 .btn-ver:hover { background: #0d2d47; }
+
+.alert {
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    color: #666;
+    font-size: 14px;
+    padding: 14px 16px;
+}
+
+.alert-warning {
+    border-color: #fde68a;
+    background: #fffbeb;
+    color: #92400e;
+}
+
+@media (max-width: 680px) {
+    .container {
+        margin: 22px auto;
+        padding: 0 14px;
+    }
+
+    .esp-card {
+        min-width: 100%;
+    }
+}

@@ -19,6 +19,8 @@
 <div class="container">
 <div class="card">
 
+    <%-- La JSP es la capa de presentacion: solo muestra datos preparados
+         por el controlador y envia el formulario de vuelta al controlador. --%>
     <h2>
         <c:choose>
             <c:when test="${cita.id == 0}">Nueva Cita</c:when>
@@ -32,9 +34,13 @@
 
     <c:choose>
         <c:when test="${cita.id == 0}">
+            <%-- Si la cita no tiene id, el formulario enviara una creacion nueva
+                 a /cita/guardar, que sera atendido por CitaController. --%>
             <form action="${pageContext.request.contextPath}/cita/guardar" method="post">
         </c:when>
         <c:otherwise>
+            <%-- Si la cita ya existe, el flujo cambia al metodo de actualizacion
+                 del controlador, pero la misma vista se reutiliza. --%>
             <form action="${pageContext.request.contextPath}/cita/actualizar" method="post">
             <input type="hidden" name="id" value="${cita.id}"/>
         </c:otherwise>
@@ -42,8 +48,9 @@
 
         <div class="form-group">
             <label>Especialidad</label>
-            <select name="especialidad" required>
+            <select name="especialidad" id="especialidadSelect" required>
                 <option value="">-- Selecciona --</option>
+                <%-- 'especialidades' viene del Model cargado por el controlador. --%>
                 <c:forEach var="esp" items="${especialidades}">
                     <option value="${esp.nombre}"
                         <c:if test="${cita.especialidad == esp.nombre}">selected</c:if>>
@@ -55,12 +62,12 @@
 
         <div class="form-group">
             <label>Médico</label>
-            <select name="medico" required>
+            <select name="medico" id="medicoSelect" required>
                 <option value="">-- Selecciona --</option>
                 <c:forEach var="medico" items="${medicos}">
-                    <option value="${medico}"
-                        <c:if test="${cita.medico == medico}">selected</c:if>>
-                        ${medico}
+                    <option value="${medico.nombre}" data-especialidad="${medico.especialidad}"
+                        <c:if test="${cita.medico == medico.nombre}">selected</c:if>>
+                        ${medico.nombre}
                     </option>
                 </c:forEach>
             </select>
@@ -75,6 +82,7 @@
             <label>Hora</label>
             <select name="hora" required>
                 <option value="">-- Selecciona --</option>
+                <%-- La vista no calcula horarios; solo renderiza la lista entregada por servicio. --%>
                 <c:forEach var="hora" items="${horas}">
                     <option value="${hora}"
                         <c:if test="${cita.hora == hora}">selected</c:if>>
@@ -100,6 +108,46 @@
 </div>
 
 <%@ include file="../_footer.jsp" %>
+
+<script>
+    (function () {
+        const especialidadSelect = document.getElementById('especialidadSelect');
+        const medicoSelect = document.getElementById('medicoSelect');
+
+        function filtrarMedicos() {
+            const especialidad = especialidadSelect.value;
+            let visibleSeleccionado = false;
+
+            Array.from(medicoSelect.options).forEach(function (option) {
+                if (!option.value) {
+                    option.hidden = false;
+                    option.disabled = false;
+                    return;
+                }
+
+                const visible = option.dataset.especialidad === especialidad;
+                option.hidden = !visible;
+                option.disabled = !visible;
+                if (visible && option.selected) {
+                    visibleSeleccionado = true;
+                }
+            });
+
+            if (!visibleSeleccionado) {
+                medicoSelect.value = '';
+                const unicoMedico = Array.from(medicoSelect.options).find(function (option) {
+                    return option.value && !option.disabled;
+                });
+                if (unicoMedico) {
+                    medicoSelect.value = unicoMedico.value;
+                }
+            }
+        }
+
+        especialidadSelect.addEventListener('change', filtrarMedicos);
+        filtrarMedicos();
+    })();
+</script>
 
 </body>
 </html>

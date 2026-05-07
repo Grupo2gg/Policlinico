@@ -1,22 +1,38 @@
 package com.policlinico.repository.impl;
 
+import com.policlinico.model.Rol;
 import com.policlinico.model.Usuario;
+import com.policlinico.model.UsuarioRol;
 import com.policlinico.repository.UsuarioDAO;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UsuarioDAOImpl implements UsuarioDAO {
 
     private static final List<Usuario> usuarios = new ArrayList<>();
+    private static final List<Rol> roles = new ArrayList<>();
+    private static final List<UsuarioRol> usuarioRoles = new ArrayList<>();
 
     static {
+        roles.add(new Rol(1, "ADMIN"));
+        roles.add(new Rol(2, "PACIENTE"));
+
         usuarios.add(new Usuario(1, "Carlos", "Mendoza", "carlos@policlinico.com", "123456", "999111222", "70112233", "1990-02-10", "ADMIN"));
         usuarios.add(new Usuario(2, "Lucia", "Paredes", "lucia@policlinico.com", "123456", "999222333", "71223344", "1995-06-18", "PACIENTE"));
         usuarios.add(new Usuario(3, "Andrea", "Salas", "andrea@policlinico.com", "123456", "999333444", "72334455", "1988-09-22", "PACIENTE"));
-        usuarios.add(new Usuario(4, "Miguel", "Torres", "miguel@policlinico.com", "123456", "999444555", "73445566", "1992-01-05", "RECEPCIONISTA"));
+        usuarios.add(new Usuario(4, "Miguel", "Torres", "miguel@policlinico.com", "123456", "999444555", "73445566", "1992-01-05", "PACIENTE"));
+
+        usuarioRoles.add(new UsuarioRol(1, 1));
+        usuarioRoles.add(new UsuarioRol(2, 2));
+        usuarioRoles.add(new UsuarioRol(3, 2));
+        usuarioRoles.add(new UsuarioRol(4, 2));
+    }
+
+    @Override
+    public List<Usuario> findAll() {
+        return new ArrayList<>(usuarios);
     }
 
     @Override
@@ -30,7 +46,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     @Override
     public Usuario findByEmail(String email) {
         return usuarios.stream()
-                .filter(usuario -> Objects.equals(usuario.getEmail(), email))
+                .filter(usuario -> usuario.getEmail() != null
+                        && email != null
+                        && usuario.getEmail().equalsIgnoreCase(email.trim()))
                 .findFirst()
                 .orElse(null);
     }
@@ -40,6 +58,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         int nuevoId = usuarios.stream().mapToInt(Usuario::getId).max().orElse(0) + 1;
         usuario.setId(nuevoId);
         usuarios.add(usuario);
+        usuarioRoles.add(new UsuarioRol(nuevoId, 2));
     }
 
     @Override
@@ -50,6 +69,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 return;
             }
         }
+    }
+
+    @Override
+    public void delete(int id) {
+        usuarios.removeIf(usuario -> usuario.getId() == id);
+        usuarioRoles.removeIf(usuarioRol -> usuarioRol.getUsuarioId() == id);
     }
 
     @Override

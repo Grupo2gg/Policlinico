@@ -7,9 +7,14 @@ public class Especialidad {
     private String descripcion;
     private String medico;
     private String horarioDisponible;
-    private boolean activa;
+    private boolean activa = true;
 
     public Especialidad() {
+    }
+
+    public Especialidad(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
     }
 
     public Especialidad(int id, String nombre, String descripcion, String medico,
@@ -70,7 +75,6 @@ public class Especialidad {
         this.activa = activa;
     }
 
-    @Override
     public String toString() {
         return "Especialidad{" +
                 "id=" + id +

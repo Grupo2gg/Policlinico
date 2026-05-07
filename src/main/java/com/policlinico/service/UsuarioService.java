@@ -1,7 +1,10 @@
 package com.policlinico.service;
 
 import com.policlinico.model.Usuario;
+import java.util.List;
 public interface UsuarioService {
+
+    List<Usuario> obtenerTodos();
 
     Usuario obtenerPorId(int id);
 
@@ -10,6 +13,8 @@ public interface UsuarioService {
     boolean existeEmail(String email);
 
     void actualizarUsuario(Usuario usuario);
+
+    void eliminarUsuario(int id);
 
     Usuario login(String email, String password);
 }

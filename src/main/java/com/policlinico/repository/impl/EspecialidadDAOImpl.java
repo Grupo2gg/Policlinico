@@ -4,7 +4,6 @@ import com.policlinico.model.Especialidad;
 import com.policlinico.repository.EspecialidadDAO;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -34,9 +33,29 @@ public class EspecialidadDAOImpl implements EspecialidadDAO {
     }
 
     @Override
+    public void save(Especialidad especialidad) {
+        int nuevoId = especialidades.stream().mapToInt(Especialidad::getId).max().orElse(0) + 1;
+        especialidad.setId(nuevoId);
+        especialidades.add(especialidad);
+    }
+
+    @Override
+    public void update(Especialidad especialidad) {
+        for (int i = 0; i < especialidades.size(); i++) {
+            if (especialidades.get(i).getId() == especialidad.getId()) {
+                especialidades.set(i, especialidad);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void delete(int id) {
+        especialidades.removeIf(especialidad -> especialidad.getId() == id);
+    }
+
+    @Override
     public List<Especialidad> findActivas() {
-        return especialidades.stream()
-                .filter(Especialidad::isActiva)
-                .collect(Collectors.toList());
+        return new ArrayList<>(especialidades);
     }
 }
