@@ -1,2 +1,0 @@
-INSERT INTO USUARIO (NOMBRE, APELLIDO, EMAIL, PASSWORD, TELEFONO, DNI, FECHA_NACIMIENTO, ROL) 
-VALUES ('Administrador', 'Principal', 'admin@policlinico.com', 'admin123', '999999999', '12345678', '1990-01-01', 'ADMIN');
