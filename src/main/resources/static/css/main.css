@@ -1,0 +1,13 @@
+.container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+.hero { background: var(--azul); color: white; padding: 40px 30px; border-radius: 8px; text-align: center; margin-bottom: 28px; }
+.hero h1 { font-size: 26px; margin-bottom: 10px; }
+.hero p  { font-size: 15px; color: #ccc; margin-bottom: 20px; }
+
+.btn-hero { background: var(--teal); color: white; padding: 10px 26px; border-radius: 4px; text-decoration: none; font-size: 15px; }
+.btn-hero:hover { background: #0a5e55; }
+
+.servicios { display: flex; gap: 16px; margin-bottom: 28px; }
+.servicio-card { flex: 1; background: white; border: 1px solid var(--borde); border-radius: 6px; padding: 20px; text-align: center; }
+.servicio-card h3 { color: var(--azul); font-size: 16px; margin-bottom: 8px; }
+.servicio-card p  { font-size: 13px; color: #666; }
