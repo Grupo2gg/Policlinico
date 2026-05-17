@@ -69,6 +69,7 @@
                 <select name="rol" required>
                     <option value="PACIENTE" <c:if test="${usuarioForm.rol == 'PACIENTE'}">selected</c:if>>PACIENTE</option>
                     <option value="ADMIN" <c:if test="${usuarioForm.rol == 'ADMIN'}">selected</c:if>>ADMIN</option>
+                    <option value="MEDICO" <c:if test="${usuarioForm.rol == 'MEDICO'}">selected</c:if>>MEDICO</option>
                 </select>
             </div>
             <div class="form-actions">

@@ -234,6 +234,9 @@ public class UsuarioController {
         if ("ADMIN".equals(usuario.getRol())) {
             return "redirect:/admin/dashboard";
         }
+        if ("MEDICO".equals(usuario.getRol())) {
+            return "redirect:/medico/atenciones";
+        }
         return "redirect:/citas";
     }
 }

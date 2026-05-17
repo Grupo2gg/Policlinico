@@ -10,6 +10,7 @@ public class Usuario {
 
     public static final String ROL_PACIENTE = "PACIENTE";
     public static final String ROL_ADMIN = "ADMIN";
+    public static final String ROL_MEDICO = "MEDICO";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
