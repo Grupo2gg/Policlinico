@@ -9,6 +9,9 @@
                 <c:when test="${sessionScope.usuario.rol == 'ADMIN'}">
                     <a href="${pageContext.request.contextPath}/admin/dashboard">Panel Admin</a>
                 </c:when>
+                <c:when test="${sessionScope.usuario.rol == 'MEDICO'}">
+                    <a href="${pageContext.request.contextPath}/medico/atenciones">Panel Medico</a>
+                </c:when>
                 <c:otherwise>
                     <a href="${pageContext.request.contextPath}/citas">Mis Citas</a>
                 </c:otherwise>
