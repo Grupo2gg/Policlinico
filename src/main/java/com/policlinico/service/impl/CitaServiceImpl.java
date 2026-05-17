@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 
 @Service
 public class CitaServiceImpl implements CitaService {
@@ -35,10 +36,27 @@ public class CitaServiceImpl implements CitaService {
         return cita;
     }
 
+   
     public void registrarCita(Cita cita) {
+        // 1. Usamos cita.getFecha() que es el campo real de la consulta médica
+        if (cita.getFecha() != null && !cita.getFecha().isBlank()) {
+            LocalDate fechaReserva = LocalDate.parse(cita.getFecha());
+            LocalDate fechaActual = LocalDate.now();
+
+
+            if (fechaReserva.isBefore(fechaActual)) {
+                throw new IllegalArgumentException("No se pueden programar citas en fechas pasadas.");
+            }
+        } else {
+            throw new IllegalArgumentException("La fecha de la cita es obligatoria.");
+        }
+
+
+        // 2. Completar datos y guardar 
         completarDatos(cita);
         citaRepository.save(cita);
     }
+
 
     public void actualizarCita(Cita cita) {
         completarDatos(cita);
