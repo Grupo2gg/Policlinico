@@ -58,6 +58,12 @@ public class MedicoServiceImpl implements MedicoService {
         if (medico.getEspecialidad() == null || medico.getEspecialidad().isBlank()) {
             throw new IllegalArgumentException("La especialidad del medico es obligatoria");
         }
+        if (medico.getCedula() == null || !medico.getCedula().matches("\\d{8}")) {
+            throw new IllegalArgumentException("La cédula/DNI debe tener exactamente 8 dígitos numéricos");
+        }
+        if (medico.getTelefono() == null || !medico.getTelefono().matches("\\d{9}")) {
+            throw new IllegalArgumentException("El teléfono debe tener exactamente 9 dígitos numéricos");
+        }
         if (medico.getEstado() == null || medico.getEstado().isBlank()) {
             medico.setEstado(Medico.ESTADO_ACTIVO);
         }
