@@ -1,0 +1,11 @@
+INSERT INTO especialidad (nombre, descripcion, estado) VALUES ('Medicina General', 'Atencion medica general', 'ACTIVA');
+INSERT INTO especialidad (nombre, descripcion, estado) VALUES ('Cardiologia', 'Especialidad del corazon', 'ACTIVA');
+INSERT INTO especialidad (nombre, descripcion, estado) VALUES ('Pediatria', 'Atencion medica infantil', 'ACTIVA');
+INSERT INTO usuario (nombre, apellido, email, password, telefono, activo, dni, rol) VALUES ('Administrador', 'Sistema', 'admin@gmail.com', 'admin123', '000000000', true, '10000001', 'ADMIN');
+INSERT INTO usuario (nombre, apellido, email, password, telefono, activo, dni, rol) VALUES ('Carlos', 'Perez', 'carlospaciente@gmail.com', 'paciente123', '987654321', true, '20000002', 'PACIENTE');
+INSERT INTO usuario (nombre, apellido, email, password, telefono, activo, dni, rol) VALUES ('Ana', 'Torres', 'anamedico@gmail.com', 'medico123', '999888777', true, '30000003', 'MEDICO');
+INSERT INTO medico (usuario_id, especialidad_id, cmp, activo) VALUES (3, 1, '12345', true);
+INSERT INTO disponibilidad (medico_id, fecha, dia_semana, activo) VALUES (1, '2026-06-01', 'LUNES', true);
+INSERT INTO horario (disponibilidad_id, hora_inicio, hora_fin, disponible, estado) VALUES (1, '08:00', '08:30', true, 'DISPONIBLE');
+INSERT INTO horario (disponibilidad_id, hora_inicio, hora_fin, disponible, estado) VALUES (1, '08:30', '09:00', true, 'DISPONIBLE');
+INSERT INTO horario (disponibilidad_id, hora_inicio, hora_fin, disponible, estado) VALUES (1, '09:00', '09:30', true, 'DISPONIBLE');

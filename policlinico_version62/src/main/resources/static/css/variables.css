@@ -1,0 +1,24 @@
+:root {
+  --color-primario: #2c5282;
+  --color-hover: #1a365d;
+  --color-secundario: #4a7db0;
+  --color-fondo: #f0f4f8;
+  --color-blanco: #ffffff;
+  --color-borde: #cbd5e0;
+  --color-texto: #2d3748;
+  --color-texto-suave: #718096;
+  --color-exito: #276749;
+  --color-fondo-exito: #f0fff4;
+  --color-borde-exito: #9ae6b4;
+  --color-error: #c53030;
+  --color-fondo-error: #fff5f5;
+  --color-borde-error: #feb2b2;
+  --color-admin: #553c9a;
+  --color-medico: #2b6cb0;
+  --color-paciente: #276749;
+  --radio: 6px;
+  --radio-grande: 12px;
+  --sombra: 0 2px 8px rgba(0,0,0,0.08);
+  --sombra-hover: 0 4px 16px rgba(0,0,0,0.13);
+  --fuente: 'Segoe UI', system-ui, sans-serif;
+}

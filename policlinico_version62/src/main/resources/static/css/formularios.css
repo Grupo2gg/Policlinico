@@ -1,0 +1,8 @@
+.formulario { display: flex; flex-direction: column; gap: 16px; }
+.formulario-grupo { display: flex; flex-direction: column; gap: 7px; }
+.formulario label { font-size: 0.9rem; font-weight: 500; }
+.campo-formulario { border: 1px solid var(--color-borde); border-radius: var(--radio); color: var(--color-texto); font: inherit; padding: 10px 14px; width: 100%; }
+.campo-formulario:focus { border-color: var(--color-primario); outline: 2px solid var(--color-fondo); }
+textarea.campo-formulario { min-height: 100px; resize: vertical; }
+select.campo-formulario { cursor: pointer; }
+.formulario-acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }

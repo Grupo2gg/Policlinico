@@ -1,0 +1,10 @@
+.navegacion { align-items: center; background: var(--color-primario); box-shadow: var(--sombra); display: flex; height: 60px; justify-content: space-between; left: 0; padding: 0 28px; position: fixed; right: 0; top: 0; z-index: 50; }
+.navegacion-logo { color: var(--color-blanco); font-size: 1.1rem; font-weight: 700; }
+.navegacion-links { align-items: center; display: flex; gap: 8px; margin-left: auto; }
+.navegacion-links a, .navegacion-links button { background: transparent; border: 0; border-radius: var(--radio); color: var(--color-blanco); cursor: pointer; font: inherit; padding: 8px 12px; }
+.navegacion-links a:hover, .navegacion-links button:hover { background: var(--color-secundario); }
+.navegacion-usuario { color: var(--color-blanco); display: flex; flex-direction: column; font-size: 0.82rem; margin-left: 16px; }
+.insignia-rol { border-radius: 999px; color: var(--color-blanco); font-size: 0.72rem; padding: 2px 8px; width: fit-content; }
+.insignia-rol.ADMIN { background: var(--color-admin); }
+.insignia-rol.MEDICO { background: var(--color-medico); }
+.insignia-rol.PACIENTE { background: var(--color-paciente); }

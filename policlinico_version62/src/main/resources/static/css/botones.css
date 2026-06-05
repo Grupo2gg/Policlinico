@@ -1,0 +1,8 @@
+.boton { border-radius: var(--radio); cursor: pointer; display: inline-flex; font: inherit; font-weight: 500; padding: 10px 22px; transition: 0.2s; }
+.boton-primario { background: var(--color-primario); border: 1px solid var(--color-primario); color: var(--color-blanco); }
+.boton-primario:hover { background: var(--color-hover); }
+.boton-secundario { background: transparent; border: 1px solid var(--color-borde); color: var(--color-texto); }
+.boton-secundario:hover { background: var(--color-fondo); }
+.boton-peligro { background: var(--color-fondo-error); border: 1px solid var(--color-borde-error); color: var(--color-error); }
+.boton-peligro:hover { background: var(--color-borde-error); }
+.boton-icono { padding: 6px 10px; }

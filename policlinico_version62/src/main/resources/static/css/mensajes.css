@@ -1,0 +1,3 @@
+.mensaje { border-left: 4px solid; border-radius: var(--radio); display: flex; font-size: 0.93rem; gap: 10px; margin-bottom: 18px; padding: 14px 20px; }
+.mensaje-exito { background: var(--color-fondo-exito); border-color: var(--color-borde-exito); color: var(--color-exito); }
+.mensaje-error { background: var(--color-fondo-error); border-color: var(--color-borde-error); color: var(--color-error); }
